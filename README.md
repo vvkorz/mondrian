@@ -1,5 +1,13 @@
 # Piet Mondrian like pictures in Go
 
+## Usage
+
+simple examples with lines and rectangles
+
+```bash
+$ go run main.go exampleLines.go exampleRectangles.go
+```
+
 ## initial idea of an algorithm
 
 - There are "color rectangles" and "line rectangles"
