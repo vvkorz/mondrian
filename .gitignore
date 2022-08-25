@@ -1,3 +1,6 @@
+# Generated png images
+*.png
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
