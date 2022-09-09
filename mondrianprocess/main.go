@@ -58,14 +58,13 @@ func main() {
 		{Min: image.Pt(mp.x0, mp.y0), Max: image.Pt(mp.x1, mp.y1)},
 	}
 
-	pr := mondrianProcess(mp, &r)
+	pr := mondrianProcess(mp, &r, true, 0.04)
 
 	rectImage := image.NewRGBA((*pr)[0])
 
 	rand.Seed(time.Now().Unix()) // initialize global pseudo random generator
 
 	for inx, rect := range (*pr)[1:] {
-		fmt.Println(len(colors[1:]))
 		c := randomColor(colors[0], colors[1:])
 		fmt.Println(inx, rect, c)
 		draw.Draw(rectImage, rect, &image.Uniform{c}, image.ZP, draw.Src)
@@ -76,4 +75,27 @@ func main() {
 		log.Fatalf("failed create file: %s", err)
 	}
 	png.Encode(file, rectImage)
+
+	// ________________ Drawing lines ________________
+	lineImage := image.NewRGBA(image.Rectangle{image.Point{x0, y0}, image.Point{x1, y1}})
+
+	drawLines(pr, lineImage, color.Black)
+
+	// Encode as PNG.
+	f, err := os.Create("exampleLines.png")
+	if err != nil {
+		log.Fatalf("failed create file: %s", err)
+	}
+	png.Encode(f, lineImage)
+
+	// Overlaying the two images
+	//draw.DrawMask(rectImage, r[0], lineImage, image.ZP, mask, image.ZP, draw.Src)
+	//dst Image, r image.Rectangle, src image.Image, sp image.Point, mask image.Image, mp image.Point, op Op
+	draw.Draw(rectImage, r[0], lineImage, image.ZP, draw.Over)
+
+	f, err = os.Create("drawover.png")
+	if err != nil {
+		log.Fatalf("failed create file: %s", err)
+	}
+	png.Encode(f, rectImage)
 }

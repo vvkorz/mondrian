@@ -2,7 +2,6 @@
 package main
 
 import (
-	"fmt"
 	"gonum.org/v1/gonum/stat/distuv"
 	"image"
 	"image/color"
@@ -33,7 +32,7 @@ type mProcess struct {
 	y1     int
 }
 
-func mondrianProcess(mp mProcess, pr *[]image.Rectangle) *[]image.Rectangle {
+func mondrianProcess(mp mProcess, pr *[]image.Rectangle, horizontal bool, complexity float64) *[]image.Rectangle {
 
 	if mp.lambda < 0 || (mp.x1-mp.x0 <= 1 && mp.y1-mp.y0 <= 1) || (mp.x1-mp.x0 == 0 || mp.y1-mp.y0 == 0) {
 		// Stop recursive function and return final Rectangles slice
@@ -49,14 +48,14 @@ func mondrianProcess(mp mProcess, pr *[]image.Rectangle) *[]image.Rectangle {
 
 	var mp1 mProcess
 	var mp2 mProcess
-	cutRatio := 0.5
-	cut := rand.Float64()
-	fmt.Println(cut)
+	//cutRatio := 0.5
+	//cut := rand.Float64()
+	//fmt.Println(cut)
 	//costDist := distuv.Exponential{
 	//	Rate: float64(mp.x1 - mp.x0 + mp.y1 - mp.y0),
 	//}
 	alpha := float64(mp.x1 - mp.x0 + mp.y1 - mp.y0)
-	beta := float64(mp.y1-mp.y0) * 0.1
+	beta := float64(mp.y1-mp.y0) * complexity
 	costDist := distuv.Gamma{
 		Alpha: alpha,
 		Beta:  beta,
@@ -69,7 +68,10 @@ func mondrianProcess(mp mProcess, pr *[]image.Rectangle) *[]image.Rectangle {
 	// Calculating the new lambda as the old lambda minus the cost of the cut
 	lambdaCut := mp.lambda - costDist.Rand()
 
-	if (cut >= cutRatio && (mp.x1-mp.x0 > 1)) || ((mp.x1-mp.x0 > 1) && (mp.y1-mp.y0 <= 1)) {
+	// Change the cutting if/else; add new function param horizontal bool, which tells if the previous cut
+	// was horizontal or vertical; next cut is supposed to be the opposite
+	// if (cut >= cutRatio && (mp.x1-mp.x0 > 1)) || ((mp.x1-mp.x0 > 1) && (mp.y1-mp.y0 <= 1)) {
+	if (horizontal && (mp.x1-mp.x0 > 1)) || ((mp.x1-mp.x0 > 1) && (mp.y1-mp.y0 <= 1)) {
 		// Horizontal cut
 		yCut := mp.y0 + rand.Intn(mp.y1-mp.y0) + 1
 		// log.Printf("Making a horizontal cut at y=%d\n", yCut)
@@ -87,7 +89,8 @@ func mondrianProcess(mp mProcess, pr *[]image.Rectangle) *[]image.Rectangle {
 			y0:     yCut,
 			y1:     mp.y1,
 		}
-	} else if (cut < cutRatio && (mp.y1-mp.y0 > 1)) || ((mp.y1-mp.y0 > 1) && (mp.x1-mp.x0 <= 1)) {
+		horizontal = false
+	} else if (!horizontal && (mp.y1-mp.y0 > 1)) || ((mp.y1-mp.y0 > 1) && (mp.x1-mp.x0 <= 1)) {
 		// Vertical cut
 		xCut := mp.x0 + rand.Intn(mp.x1-mp.x0) + 1
 		// log.Printf("Making a horizontal cut at x=%d\n", xCut)
@@ -105,6 +108,7 @@ func mondrianProcess(mp mProcess, pr *[]image.Rectangle) *[]image.Rectangle {
 			y0:     mp.y0,
 			y1:     mp.y1,
 		}
+		horizontal = true
 	} else {
 		return pr
 	}
@@ -116,6 +120,6 @@ func mondrianProcess(mp mProcess, pr *[]image.Rectangle) *[]image.Rectangle {
 		image.Rectangle{Min: image.Pt(mp2.x0, mp2.y0), Max: image.Pt(mp2.x1, mp2.y1)},
 	)
 
-	pr = mondrianProcess(mp1, pr)
-	return mondrianProcess(mp2, pr)
+	pr = mondrianProcess(mp1, pr, horizontal, complexity)
+	return mondrianProcess(mp2, pr, horizontal, complexity)
 }
