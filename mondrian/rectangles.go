@@ -5,7 +5,6 @@ import (
 	"image"
 	"log"
 	"math/rand"
-	"time"
 )
 
 // MProcess defines the parameters of a Mondrian Process: the partitioning cost lambda,
@@ -18,14 +17,14 @@ type MProcess struct {
 	Y1     int
 }
 
-// MondrianProcess takes an initial mProcess mp and a pointer pr to the initial image canvas
-// and recursively creates rectangle partitions under given complexity and
-// horizontal/vertical direction.
-func MondrianProcess(
+// Rectangles takes an initial mProcess mp and a pointer pr to the initial image canvas
+// and recursively creates rectangle partitions under given complexity cmplx and
+// horizontal/vertical direction which is chosen in alternate and controlled by parameter hrz.
+func Rectangles(
 	mp MProcess,
 	pr *[]image.Rectangle,
-	horizontal bool,
-	complexity float64,
+	hrz bool,
+	cmplx float64,
 ) *[]image.Rectangle {
 
 	if mp.Lambda < 0 ||
@@ -40,12 +39,11 @@ func MondrianProcess(
 	if mp.Y1 < mp.Y0 {
 		log.Fatalln("y1 cannot be smaller than y0")
 	}
-	rand.Seed(time.Now().Unix())
 
 	var mp1 MProcess
 	var mp2 MProcess
 	alpha := float64(mp.X1 - mp.X0 + mp.Y1 - mp.Y0)
-	beta := float64(mp.Y1-mp.Y0) * complexity
+	beta := float64(mp.Y1-mp.Y0) * cmplx
 	costDist := distuv.Gamma{
 		Alpha: alpha,
 		Beta:  beta,
@@ -53,7 +51,7 @@ func MondrianProcess(
 	// Calculating the new lambda as the old lambda minus the cost of the cut
 	lambdaCut := mp.Lambda - costDist.Rand()
 
-	if (horizontal && (mp.X1-mp.X0 > 1)) ||
+	if (hrz && (mp.X1-mp.X0 > 1)) ||
 		((mp.X1-mp.X0 > 1) && (mp.Y1-mp.Y0 <= 1)) {
 		// Horizontal cut
 		yCut := mp.Y0 + rand.Intn(mp.Y1-mp.Y0) + 1
@@ -71,8 +69,8 @@ func MondrianProcess(
 			Y0:     yCut,
 			Y1:     mp.Y1,
 		}
-		horizontal = false
-	} else if (!horizontal && (mp.Y1-mp.Y0 > 1)) ||
+		hrz = false
+	} else if (!hrz && (mp.Y1-mp.Y0 > 1)) ||
 		((mp.Y1-mp.Y0 > 1) && (mp.X1-mp.X0 <= 1)) {
 		// Vertical cut
 		xCut := mp.X0 + rand.Intn(mp.X1-mp.X0) + 1
@@ -90,7 +88,7 @@ func MondrianProcess(
 			Y0:     mp.Y0,
 			Y1:     mp.Y1,
 		}
-		horizontal = true
+		hrz = true
 	} else {
 		return pr
 	}
@@ -102,6 +100,6 @@ func MondrianProcess(
 		image.Rectangle{Min: image.Pt(mp2.X0, mp2.Y0), Max: image.Pt(mp2.X1, mp2.Y1)},
 	)
 	// Recursively starting the function for the two new partitions
-	pr = MondrianProcess(mp1, pr, horizontal, complexity)
-	return MondrianProcess(mp2, pr, horizontal, complexity)
+	pr = Rectangles(mp1, pr, hrz, cmplx)
+	return Rectangles(mp2, pr, hrz, cmplx)
 }
