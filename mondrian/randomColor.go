@@ -1,4 +1,4 @@
-package main
+package mondrian
 
 import (
 	"image/color"
@@ -6,10 +6,10 @@ import (
 	"math/rand"
 )
 
-// randomColor picks a randomly chosen color from either mainCol (the primary color
+// RandomColor picks a randomly chosen color from either mainCol (the primary color
 // to be picked with the highest probability) or the slice secondCols (secondary colors
 // to be picked uniformly).
-func randomColor(mainCol color.Color, secondCols []color.Color) color.Color {
+func RandomColor(mainCol color.Color, secondCols []color.Color) color.Color {
 	if len(secondCols) != 3 {
 		log.Fatalf("Length of secondCols has to be 3, input has %d\n",
 			len(secondCols))

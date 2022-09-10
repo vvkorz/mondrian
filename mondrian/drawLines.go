@@ -1,4 +1,4 @@
-package main
+package mondrian
 
 import (
 	"image"
@@ -19,9 +19,9 @@ func vLine(x int, y0 int, y1 int, img *image.RGBA, col color.Color) {
 	}
 }
 
-// drawLines draws horizontal and vertical lines as defined by the rectangle edges
+// DrawLines draws horizontal and vertical lines as defined by the rectangle edges
 // of rectangles stored at pr, in color col into img.
-func drawLines(pr *[]image.Rectangle, img *image.RGBA, col color.Color) {
+func DrawLines(pr *[]image.Rectangle, img *image.RGBA, col color.Color) {
 	for _, r := range (*pr)[1:] {
 		// Drawing horizontal lines
 		hLine(r.Min.X, r.Max.X, r.Min.Y, img, col)
