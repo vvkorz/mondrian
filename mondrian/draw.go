@@ -1,7 +1,6 @@
 package mondrian
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
@@ -63,9 +62,8 @@ func DrawR(
 	rectImage := image.NewRGBA((*pr)[0])
 
 	// Drawing rectangles
-	for inx, rect := range (*pr)[1:] {
+	for _, rect := range (*pr)[1:] {
 		c := RndColor(cols, probs)
-		fmt.Println(inx, rect, c)
 		draw.Draw(rectImage, rect, &image.Uniform{c}, image.ZP, draw.Src)
 	}
 
