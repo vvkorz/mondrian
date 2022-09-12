@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>The Mondrian Art Generator</title>
+</head>
+
+<body>
+<h1>The Mondrian Art Generator</h1>
+
+<h4> Generate your own Mondrian art with chosen partition complexity.</h4>
+
+<p>Simply input a positive real number in [0.001, 0.05].
+    The lower the complexity number, the less partitions are made.</p>
+
+<p>You can choose between two syles: Mondrian art with lines and without lines.<br>
+    For Mondrian art without lines, we dare you to input a higher complexity and see what happen
+    (hint: 0.03 is a nice choice). </p>
+
+<form id="form" method="post">
+    Complexity:
+    <input type="number" name="complexity" value="0.01" min="0.001" max="0.05" step="0.001">
+    <br/>
+    <label for="style">Mondrian style:</label>
+    <select name="style" id="style">
+        <option value="rectandline">With lines</option>
+        <option value="rect">Without lines</option>
+    </select>
+    <br/>
+<!--    <input type="submit" value="Generate">-->
+    <button type="submit" onclick = "GFG_Fun()">Generate</button>
+</form>
+<h2 id="result">Your resulting Mondrian:</h2>
+</body>
+</html>
