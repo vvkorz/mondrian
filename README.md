@@ -21,6 +21,12 @@ $ go run main.go
 - Generate our favorite image and print in A3 format and when generating the image, adjust the pixels to look nice on A3 (A3 is 3508 pixels x 4961 pixels).
     We could do a few test prints on A3 to see which Mondrian canvas size should we pick.
 
+### Mask examples
+
+- [many examples](https://golang.hotexamples.com/examples/image.draw/-/DrawMask/golang-drawmask-function-examples.html)
+- [masks blogpost](https://medium.com/@damithadayananda/image-processing-with-golang-8f20d2d243a2)
+- [image blur repo](https://github.com/brunocramos/go-image-blur/blob/master/image-blur.go)
+
 
 ## Inspiration references
 
