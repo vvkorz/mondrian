@@ -20,14 +20,15 @@ func Draw(
 	y0 int,
 	y1 int,
 	cmplx float64,
-) {
-	DrawR(x0, x1, y0, y1, cmplx, false, Colors, ColorProbs)
+	path string,
+) *image.RGBA {
+	return DrawR(x0, x1, y0, y1, cmplx, false, Colors, ColorProbs, path)
 }
 
 // DrawR takes a given canvas size and calls functions Rectangles and Lines to generate
 // a single image given the partition complexity cmplx. If onlyRect is true, then the image
 // is generated only with Rectangles. The colors of the partitions are set in cols and the
-// distribution of colors in probs.
+// distribution of colors in probs. Image (png) is stored to path.
 func DrawR(
 	x0 int,
 	x1 int,
@@ -37,7 +38,8 @@ func DrawR(
 	onlyRect bool,
 	cols []color.Color,
 	probs []float64,
-) {
+	path string,
+) *image.RGBA {
 	// Initialize global pseudo random generator
 	rand.Seed(time.Now().Unix())
 
@@ -68,12 +70,12 @@ func DrawR(
 	}
 
 	if onlyRect {
-		f, err := os.Create("img/Rectangles.png")
+		f, err := os.Create(path)
 		if err != nil {
 			log.Fatalf("failed create file: %s", err)
 		}
 		png.Encode(f, rectImage)
-		return
+		return rectImage
 	}
 
 	// Drawing lines
@@ -84,9 +86,10 @@ func DrawR(
 	// Overlaying the two images
 	draw.Draw(rectImage, r[0], lineImage, image.ZP, draw.Over)
 
-	f, err := os.Create("img/RectandLines.png")
+	f, err := os.Create(path)
 	if err != nil {
 		log.Fatalf("failed create file: %s", err)
 	}
 	png.Encode(f, rectImage)
+	return rectImage
 }

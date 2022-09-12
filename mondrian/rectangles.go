@@ -39,6 +39,9 @@ func Rectangles(
 	if mp.Y1 < mp.Y0 {
 		log.Fatalln("y1 cannot be smaller than y0")
 	}
+	if cmplx > 0.08 && cmplx < 0.001 {
+		log.Fatalf("Complexity should be in (0.001, 0.08), current value is %f", cmplx)
+	}
 
 	var mp1 MProcess
 	var mp2 MProcess
