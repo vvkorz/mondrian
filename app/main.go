@@ -20,7 +20,3 @@ func main() {
 	r := newRouter()
 	http.ListenAndServe(":8080", r)
 }
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	tpl.Execute(w, nil)
-}

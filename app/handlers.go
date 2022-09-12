@@ -8,6 +8,11 @@ import (
 	"strconv"
 )
 
+// handler reads and parses the html template for the first page
+func handler(w http.ResponseWriter, r *http.Request) {
+	tpl.Execute(w, nil)
+}
+
 // imageHandler responds to an incoming request by generating a Mondrian image fo size 500x500
 // and according to the chosen style and complexity which is taken from the request form. The
 // response is a html block with the image source and dimensions.
