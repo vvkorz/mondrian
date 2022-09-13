@@ -7,6 +7,15 @@ simple examples with lines and rectangles
 ```bash
 $ go run main.go
 ```
+
+to start a web app
+
+```bash
+$ cd app
+$ go build
+$ ./app
+```
+
 ## TODOs
 
 - @Vladimir: Make frontend display the generated Mondrian image on the same page where the input form is, instead of redirecting to new page.
