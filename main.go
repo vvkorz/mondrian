@@ -1,11 +1,21 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"image/color"
-	"mondrian/mondrian"
+	"mondrianart/mondrian"
+	"path/filepath"
 )
 
 func main() {
+	// Cmd arguments where to store the resulting image
+	imgpath := flag.String(
+		"imgpath",
+		"./img",
+		"Path to resulting images, e.g. ~/mylocalpath",
+	)
+	flag.Parse()
 	// Define canvas size
 	x0 := 0
 	x1 := 500
@@ -16,9 +26,10 @@ func main() {
 	//If choosing the onlyRect option (draws only rectangles without the lines, go for
 	//higher complexity, e.g. 0.03).
 	cmplx := 0.01
+	fmt.Printf("Saving your Mondrian images to %s\n", *imgpath)
 
 	// Draws rectangles and lines
-	mondrian.Draw(x0, x1, y0, y1, cmplx, "img/RectandLines.png")
+	mondrian.Draw(x0, x1, y0, y1, cmplx, filepath.Join(*imgpath, "RectandLines.png"))
 
 	// Draws only rectangles with higher complexity and given colors and color distribution
 	var cols = []color.Color{
@@ -33,5 +44,5 @@ func main() {
 		0.3,
 		0.3,
 	}
-	mondrian.DrawR(x0, x1, y0, y1, 0.05, true, cols, probs, "img/Rectangles.png")
+	mondrian.DrawR(x0, x1, y0, y1, 0.03, true, cols, probs, filepath.Join(*imgpath, "Rectangles.png"))
 }

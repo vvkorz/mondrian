@@ -1,4 +1,4 @@
-module mondrian
+module mondrianart
 
 go 1.19
 
