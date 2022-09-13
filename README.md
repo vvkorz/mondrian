@@ -84,6 +84,7 @@ two intervals `(y_new, y1)` and `(y0, y_new)` and the initial budget `lambda` is
 `Expcost ~ Exp(x1 - x0 + y1 - y0)` is drawn from the exponential distribution with rate the sum of intervals.
 The process then recurses, generating independent Mondrian Processes `MP(lambda_new, x0, x1, y_new, y1)` and `MP(lambda_new, x0, x1, y0, y_new)` with diminished budget parameter `lambda_new`.
 The parameter `lambda` controls the number of cuts, with the process more likely to cut rectangles with large perimeters.
+The recursive process stops when `lambda_new < 0`, thus the budget is exhausted.
 
 Interestingly enough, setting `lambda_new = lambda - Expcost`, where `Expcost ~ Exp(x1 - x0 + y1 - y0)` did noy yield expected 
 aesthetic results in our case because the inital budget was used up too slowly, which generated too many partitions. Trying out
@@ -115,6 +116,8 @@ from the Gamma distribution with parameters	`alpha = x1 - x0 + y1 - y0` and `bet
 - The result are two new Mondrian Processes `MP(lambda_new, x0, x1, y0, y_new)` and `MP(lambda_new, x0, x1, y_new, y1)`.
 - The algorithm then runs recursively for the two new Mondrian Processes with `horizontal=false`, meaning that the following
 partition will be made vertically.
+- For `lambda_new` the recursion stops and all previously made partitions (rectangles) are returned in a single data type.
+To prevent large data sets being passed around between recursions, the algorithm works with pointers, reading data directly from memory and altering it there.
 
 ### References
 
