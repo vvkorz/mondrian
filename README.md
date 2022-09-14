@@ -16,6 +16,17 @@ $ go build
 $ ./app
 ```
 
+## Development
+
+Build docker on a local machine
+
+```bash
+$ DOCKER_BUILDKIT=0 docker build --tag 'mondrian:latest' --no-cache .
+$ docker run --publish 8080:8080 mondrian:latest
+```
+
+
+
 ## TODOs
 
 - @Vladimir: Make frontend display the generated Mondrian image on the same page where the input form is, instead of redirecting to new page.
