@@ -30,16 +30,18 @@ click on `Generate` and enjoy your image. It's that simple!
 
 ### The program binary (exe)
 
-You also have the option of downloading the Mondrian generator binary from [Dropbox](https://www.dropbox.com/sh/r1fs7g6uy1yvsbs/AAApddWSpOdIzTLaAiSQ1tSXa?dl=0) and running it on your local machine. 
-We offer binaries for the following operating systems:
-- [Mac Intel (amd64)](https://www.dropbox.com/s/bdkoak1o6ces1a8/mondrianart_x64?dl=0)
-- [Mac silicone (arm64)](https://www.dropbox.com/s/adjy7qaswatsr22/mondrianart_x64?dl=0)
-- [Windows x64](https://www.dropbox.com/s/314jcgjfyqhdjke/mondrianart.exe?dl=0)
+You also have the option of downloading the Mondrian generator binary from Dropbox ([link to files](https://www.dropbox.com/sh/r1fs7g6uy1yvsbs/AAApddWSpOdIzTLaAiSQ1tSXa?dl=0)) and running it on your local machine. 
+We offer binaries for the mac intel, mac silicon and windows x64.
+
 
 After downloading the binary, run the program:
-- for MacOs:
+- for MacOs silicon:
     ```bash
-    $ ./mondrianart -imgpath ~/mylocalpath
+    $ ./mondrianart_arm64 -imgpath ~/mylocalpath
+    ```
+- for MacOs intel:
+    ```bash
+    $ ./mondrianart_x64 -imgpath ~/mylocalpath
     ```
 - for Windows:
     ```bash
