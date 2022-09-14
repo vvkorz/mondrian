@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <title>Mondrian Playground</title>
+   </head>
+   <body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+               <li class="nav-item active">
+                  <a class="nav-link" href="/about">About <span class="sr-only">(current)</span></a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/">Playground</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="https://github.com/vvkorz/mondrian" target="_blank">GitHub</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="https://hub.docker.com/r/vvkorz/mondriango" target="_blank">Docker Hub</a>
+               </li>
+            </ul>
+         </div>
+      </nav>
+      <div class="container-fluid">
+         <div class="row justify-content-md-center">
+            <div class="col col-md-10 ">
+               <h1 id="piet-mondrian-generative-art-in-go">Piet Mondrian generative art in Go</h1>
+               <p>A Mondrian image generator in Go takes a canvas of a certain size and divides it into partitions, thus creating
+                  a Piet Mondrian inspired image with primary colored rectangles. The partition complexity can be varied and can
+                  greatly change how your resulting image looks like. To learn more about the partition complexity and the algorithmic
+                  approach, check out section &quot;Algorithm description&quot;.
+               </p>
+               <p>The Mondrian generator has the possibility to generate two styles of Mondrian-inspired images:</p>
+               <ul>
+                  <li>the classical Mondrian image with primary colored rectangle partitions which are outlined with black lines</li>
+                  <li>a more abstract Mondrian inspired image with only primary colored rectangles which are not outlined</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div class="container-fluid">
+         <div class="row justify-content-md-center">
+            <div class="col col-md-10 ">
+               <h1 id="algorithm-description">Algorithm description</h1>
+               <h2 id="the-mondrian-process">The Mondrian Process</h2>
+               <p>The core of the algorithm is the 2D Mondrian Process, as defined in [1].
+                  We describe the 2D Mondrian Process <code>M ~ MP(lambda, x0, x1, y0, y1)</code> on the rectangle <code>(x0, x1) x (y0, y1)</code> with initial budget <code>lambda = x1 - x0 + y1 - y0</code>.
+                  A horizontal y-axis-aligned cut is made uniformly at random along the interval <code>(y0, y1)</code>. The new point <code>y_new</code> splits <code>(y0, y1)</code> into
+                  two intervals <code>(y_new, y1)</code> and <code>(y0, y_new)</code> and the initial budget <code>lambda</code> is regenerated as <code>lambda_new = lambda - Expcost</code>, where
+                  <code>Expcost ~ Exp(x1 - x0 + y1 - y0)</code> is drawn from the exponential distribution with rate the sum of intervals.
+                  The process then recurses, generating independent Mondrian Processes <code>MP(lambda_new, x0, x1, y_new, y1)</code> and <code>MP(lambda_new, x0, x1, y0, y_new)</code> with diminished budget parameter <code>lambda_new</code>.
+                  The parameter <code>lambda</code> controls the number of cuts, with the process more likely to cut rectangles with large perimeters.
+               </p>
+               <p>Interestingly enough, setting <code>lambda_new = lambda - Expcost</code>, where <code>Expcost ~ Exp(x1 - x0 + y1 - y0)</code> did not yield expected
+                  aesthetic results in our case because the inital budget was used up too slowly, which generated too many partitions. Trying out
+                  a Poisson distribution for the cost reduction also did not yield expected results becuse now the budget was used up to quickly,
+                  generating too few partitions. Finally, after trying the Gamma distribution (as part of the exponential distribution family we had a gut feeling that it might be a good fit),
+                  satisfying aesthetic results could be generated. Letting the <code>alpha</code> parameter fixed at <code>alpha = x1 - x0 + y1 - y0</code> while we
+                  varied the <code>beta</code> parameter with a complexity factor greather than 0 (<code>beta = (y1 - y0) * complexity</code>), allowed us to generate
+                  partitions with slightly varied partition depth.
+               </p>
+               <h2 id="the-algorithm">The algorithm</h2>
+               <p>The partitioning algorithm takes a rectangle and splits it in two rectangles of randomly chosen sizes. This process continues
+                  for the new two rectangles, which are again split in two and so on. In order to prevent an infinite splitting of rectangles and
+                  ensure that the partitioning will eventually stop, we assign a starting budget <code>lambda</code>, which is reduced after every new partitioning.
+                  If the rectangle to be partitioned is large, a lower amount is deducted from the cost, in order to make the algorithm rather split
+                  the larger rectangles than the small ones.
+               </p>
+               <p>The algorithm takes the following input parameters:</p>
+               <ul>
+                  <li>a fixed 2D empty canvas size (in pixels), for example 500x500. This will be the base rectangle for the first partitioning.</li>
+                  <li>an initial Mondrian Process with parameters <code>x1</code> and <code>y1</code> set to the initial canvas size and initial budget parameter <code>lambda</code> set to <code>x1 - x0 + y1 - y0</code>.</li>
+                  <li>boolean parameter <code>horizontal</code>, which tells the algorithm if the first cut should be horizontal (when <code>horizontal=true</code>) or vertical (when <code>horizontal=false</code>).</li>
+                  <li>partitioning complexity parameter, which is directly embedded into the calculation of the partitioning cost deduction and thus controls how deep the algorithm will split the rectangles.</li>
+               </ul>
+               <p>Without loss of generality let us assume that <code>horizontal=true</code>, meaning that the first split will be horizontal.</p>
+               <ul>
+                  <li>The algorithm starts with the initial rectangle represented by the Mondrian Process <code>MP(lambda, x0, x1, y0, y1)</code>
+                     of the initial canvas size and chooses a point <code>y_new</code> within the <code>(y0, y1)</code> interval uniformly at random.
+                  </li>
+                  <li>It calculates the cost of the split and the new reduced budget <code>lambda_new = lambda - Gammacost</code>, where <code>Gammacost</code> is a random sample taken
+                     from the Gamma distribution with parameters	<code>alpha = x1 - x0 + y1 - y0</code> and <code>beta = (y1 - y0) * complexity</code>.
+                  </li>
+                  <li>The result are two new Mondrian Processes <code>MP(lambda_new, x0, x1, y0, y_new)</code> and <code>MP(lambda_new, x0, x1, y_new, y1)</code>.</li>
+                  <li>The algorithm then runs recursively for the two new Mondrian Processes with <code>horizontal=false</code>, meaning that the following
+                     partition will be made vertically.
+                  </li>
+               </ul>
+               <h2 id="references">References</h2>
+               <p>[1] <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.564.8410&amp;rep=rep1&amp;type=pdf">Mondrian Process</a></p>
+               <h2 id="inspiration-references">Inspiration references</h2>
+               <ul>
+                  <li><a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.564.8410&amp;rep=rep1&amp;type=pdf">Mondrian Process</a></li>
+                  <li><a href="https://github.com/8lall0/GoMondrian">GoMondrian</a></li>
+                  <li><a href="https://github.com/jdxyw/generativeart">generativeart</a></li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   </body>
+</html>
