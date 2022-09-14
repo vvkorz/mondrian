@@ -72,10 +72,9 @@ This, as with the binary, generates two Mondrian-like images in your chosen path
 
 However, if you choose this option, you will have to install Go and install all packages from `go.mod`.
 
+# Algorithm description
 
-## Algorithm description
-
-### The Mondrian Process
+## The Mondrian Process
 
 The core of the algorithm is the 2D Mondrian Process, as defined in [1].
 We describe the 2D Mondrian Process `M ~ MP(lambda, x0, x1, y0, y1)` on the rectangle `(x0, x1) x (y0, y1)` with initial budget `lambda = x1 - x0 + y1 - y0`.
@@ -85,7 +84,7 @@ two intervals `(y_new, y1)` and `(y0, y_new)` and the initial budget `lambda` is
 The process then recurses, generating independent Mondrian Processes `MP(lambda_new, x0, x1, y_new, y1)` and `MP(lambda_new, x0, x1, y0, y_new)` with diminished budget parameter `lambda_new`.
 The parameter `lambda` controls the number of cuts, with the process more likely to cut rectangles with large perimeters.
 
-Interestingly enough, setting `lambda_new = lambda - Expcost`, where `Expcost ~ Exp(x1 - x0 + y1 - y0)` did noy yield expected 
+Interestingly enough, setting `lambda_new = lambda - Expcost`, where `Expcost ~ Exp(x1 - x0 + y1 - y0)` did not yield expected 
 aesthetic results in our case because the inital budget was used up too slowly, which generated too many partitions. Trying out
 a Poisson distribution for the cost reduction also did not yield expected results becuse now the budget was used up to quickly, 
 generating too few partitions. Finally, after trying the Gamma distribution (as part of the exponential distribution family we had a gut feeling that it might be a good fit),
@@ -93,7 +92,7 @@ satisfying aesthetic results could be generated. Letting the `alpha` parameter f
 varied the `beta` parameter with a complexity factor greather than 0 (`beta = (y1 - y0) * complexity`), allowed us to generate
 partitions with slightly varied partition depth.
 
-### The algorithm
+## The algorithm
 
 The partitioning algorithm takes a rectangle and splits it in two rectangles of randomly chosen sizes. This process continues
 for the new two rectangles, which are again split in two and so on. In order to prevent an infinite splitting of rectangles and
@@ -116,7 +115,7 @@ from the Gamma distribution with parameters	`alpha = x1 - x0 + y1 - y0` and `bet
 - The algorithm then runs recursively for the two new Mondrian Processes with `horizontal=false`, meaning that the following
 partition will be made vertically.
 
-### References
+## References
 
 [1] [Mondrian Process](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.564.8410&rep=rep1&type=pdf)
 
