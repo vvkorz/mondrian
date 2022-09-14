@@ -16,6 +16,6 @@ RUN ls -la ./
 #RUN go env -w GO111MODULE=off
 RUN go build -o ./mondrianapp
 RUN ls -la ./
-EXPOSE 8080
+EXPOSE 8000
 
 CMD [ "/webapp/app/mondrianapp" ]
