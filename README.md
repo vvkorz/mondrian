@@ -12,14 +12,14 @@ The Mondrian generator has the possibility to generate two styles of Mondrian-in
 ## Usage
 
 You have three options of running this program, ordered by simplicity: 
-- visiting the Mondrian generator website [LINK TO UI COMING SOON]()
+- visiting the [Mondrian playground](https://mondrian-play.azurewebsites.net/)
 - downloading the program binary/exe (available for Mac and Windows) and running from commandline
 - cloning this repository and running `main.go` file
 
 While the algorithm does have the option of generating the Mondrian partitions with different partition complexity values,
 for simplicity purposes of usage, we decided not to offer this option from the command line. Also the canvas size is fixed
 to 500x500 pixels. If you want to try out how the complexity influences the partitioning, be sure to check out our website
-[LINK TO UI COMING SOON]() or you can clone this repository and change the complexity value directly in `main.go`.
+[Mondrian playground](https://mondrian-play.azurewebsites.net/) or you can clone this repository and change the complexity value directly in `main.go`.
 
 The three options are explained in detail in the next three sections.
 
