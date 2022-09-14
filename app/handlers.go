@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"image/color"
-	"mondrian/mondrian"
+	"mondrianart/mondrian"
 	"net/http"
 	"strconv"
 )
