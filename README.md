@@ -129,7 +129,7 @@ partition will be made vertically.
 
 # Web App
 
-to start a web app
+`/app` folder contains a simple web app that generates the images
 
 ```bash
 $ cd app
@@ -137,7 +137,9 @@ $ go build
 $ ./app
 ```
 
-## Development
+## Docker
+
+Public docker image [vvkorz/mondriango](https://hub.docker.com/r/vvkorz/mondriango)
 
 Build docker on a local machine
 
