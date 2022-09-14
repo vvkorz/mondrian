@@ -119,9 +119,35 @@ partition will be made vertically.
 
 [1] [Mondrian Process](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.564.8410&rep=rep1&type=pdf)
 
+## Inspiration references
+
+- [Mondrian Process](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.564.8410&rep=rep1&type=pdf)
+- [GoMondrian](https://github.com/8lall0/GoMondrian)
+- [generativeart](https://github.com/jdxyw/generativeart)
+
+# Web App
+
+to start a web app
+
+```bash
+$ cd app
+$ go build 
+$ ./app
+```
+
+## Development
+
+Build docker on a local machine
+
+```bash
+$ DOCKER_BUILDKIT=0 docker build --tag 'mondrian:latest' --no-cache .
+$ docker run --publish 8080:8000 mondrian:latest
+```
+
 # Building the binary
 
 To build the windows/amd64 binary (creates `mondrianart.exe`):
+
 ```bash
 $ GOOS=windows GOARCH=amd64 go build mondrianart
 ```
