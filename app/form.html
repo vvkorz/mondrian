@@ -8,28 +8,35 @@
       <title>Mondrian Playground</title>
    </head>
    <body>
+      <div class="container-fluid">
+         <div class="row justify-content-md-center">
+            <div class="col col-md-4 text-center">
+               <h2>Mondrian Playground</h2>
+            </div>
+         </div> 
+      </div> 
       <form id="form" method="post" action="/">
          <div class="container-fluid">
             <div class="row justify-content-md-center">
                <div class="col col-md-4 text-center">
                   <label for="complexityRange" class="form-label" data-toggle="tooltip" data-placement="top" title="The lower the complexity number, the less partitions are made.">Complexity:</label>
-                  <input id="complexityRange" class="form-range" type="range" name="complexity" value="0.01" min="0.001" max="0.05" step="0.001" oninput="this.nextElementSibling.value = this.value">
-                  <output>0.01</output>
+                  <input id="complexityRange" class="form-range" type="range" name="complexity" value="{{.Complexity}}" min="0.001" max="0.05" step="0.001" oninput="this.nextElementSibling.value = this.value">
+                  <output>{{.Complexity}}</output>
                </div>
             </div>
             <div class="row justify-content-md-center">
                <div class="col col-lg-4 text-center">
-                  <label for="style">Mondrian style:</label>
-                  <select class="form-select form-select-sm" name="style" id="style">
-                     <option value="rectandline">lines</option>
-                     <option selected value="rect">no lines</option>
+                  
+                  <select class="form-select form-select-lg" name="style" id="style">
+                     <option {{if .IsRectandLine}} selected {{end}} value="rectandline">lines</option>
+                     <option {{if .IsRect}} selected {{end}} value="rect">no lines</option>
                   </select>
                </div>
             </div>
             <div class="row justify-content-md-center">
                <div class="col col-md-4 text-center">
                   <!--    <input type="submit" value="Generate">-->
-                  <button type="submit" class="btn btn-warning btn-lg btn-block" onclick = "GFG_Fun()"> Generate</button>
+                  <button type="submit" class="btn btn-warning btn-lg btn-block" onclick = "GFG_Fun()"> Generate! </button>
                </div>
             </div>
          </div>
