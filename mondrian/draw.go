@@ -81,7 +81,7 @@ func DrawR(
 	// Drawing lines
 	lineImage := image.NewRGBA(image.Rectangle{image.Point{x0, y0}, image.Point{x1, y1}})
 
-	Lines(pr, lineImage, color.Black)
+	Lines(pr, lineImage, color.RGBA{30, 38, 33, 255})
 
 	// Overlaying the two images
 	draw.Draw(rectImage, r[0], lineImage, image.ZP, draw.Over)
