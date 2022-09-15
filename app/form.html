@@ -8,37 +8,66 @@
       <title>Mondrian Playground</title>
    </head>
    <body>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+             <li class="nav-item">
+               <a class="nav-link" href="/about">About <span class="sr-only">(current)</span></a>
+             </li>
+             <li class="nav-item active" >
+               <a class="nav-link" href="/">Playground </a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="https://github.com/vvkorz/mondrian" target="_blank">GitHub</a>
+             </li>
+             <li class="nav-item">
+               <a class="nav-link" href="https://hub.docker.com/r/vvkorz/mondriango" target="_blank">Docker Hub</a>
+             </li>
+           </ul>
+         </div>
+      </nav>
+      
+      <div class="container-fluid">
+         <div class="row justify-content-md-center">
+            <div class="col col-md-4 text-center">
+               <h2>Mondrian Playground</h2>
+            </div>
+         </div> 
+      </div> 
       <form id="form" method="post" action="/">
-         <div class="container">
+         <div class="container-fluid">
             <div class="row justify-content-md-center">
-               <div class="col col-lg-4 text-center">
+               <div class="col col-md-4 text-center">
                   <label for="complexityRange" class="form-label" data-toggle="tooltip" data-placement="top" title="The lower the complexity number, the less partitions are made.">Complexity:</label>
-                  <input id="complexityRange" class="form-range" type="range" name="complexity" value="0.01" min="0.001" max="0.05" step="0.001" oninput="this.nextElementSibling.value = this.value">
-                  <output>0.01</output>
+                  <input id="complexityRange" class="form-range" type="range" name="complexity" value="{{.Complexity}}" min="0.001" max="0.05" step="0.001" oninput="this.nextElementSibling.value = this.value">
+                  <output>{{.Complexity}}</output>
                </div>
             </div>
             <div class="row justify-content-md-center">
                <div class="col col-lg-4 text-center">
-                  <label for="style">Mondrian style:</label>
-                  <select class="form-select form-select-sm" name="style" id="style">
-                     <option value="rectandline">lines</option>
-                     <option selected value="rect">no lines</option>
+                  
+                  <select class="form-select  form-select-lg mb-3" name="style" id="style">
+                     <option {{if .IsRectandLine}} selected {{end}} value="rectandline">lines</option>
+                     <option {{if .IsRect}} selected {{end}} value="rect">no lines</option>
                   </select>
                </div>
             </div>
             <div class="row justify-content-md-center">
-               <div class="col col-lg-4 text-center">
+               <div class="col col-md-4 text-center">
                   <!--    <input type="submit" value="Generate">-->
-                  <button type="submit" class="btn btn-warning btn-lg btn-block" onclick = "GFG_Fun()"> Generate</button>
+                  <button type="submit" class="btn btn-warning btn-lg btn-block" onclick = "GFG_Fun()"> Generate! </button>
                </div>
             </div>
          </div>
       </form>
       <hr/>
-      <div class="container">
+      <div class="container-fluid">
          <div class="row justify-content-md-center">
             <div class="col col-md-8 text-center">
-               <img src='img/mondrian_image.png' width='500px' style='border:1px solid black;'>
+               <img src='img/mondrian_image.png' class="img-fluid" alt="Mondrian image"  style='border:1px solid black;'>
             </div>
          </div>
       </div>
