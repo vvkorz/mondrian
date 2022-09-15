@@ -57,7 +57,7 @@
                   two intervals <code>(y_new, y1)</code> and <code>(y0, y_new)</code> and the initial budget <code>lambda</code> is regenerated as <code>lambda_new = lambda - Expcost</code>, where
                   <code>Expcost ~ Exp(x1 - x0 + y1 - y0)</code> is drawn from the exponential distribution with rate the sum of intervals.
                   The process then recurses, generating independent Mondrian Processes <code>MP(lambda_new, x0, x1, y_new, y1)</code> and <code>MP(lambda_new, x0, x1, y0, y_new)</code> with diminished budget parameter <code>lambda_new</code>.
-                  The parameter <code>lambda</code> controls the number of cuts, with the process more likely to cut rectangles with large perimeters.
+                  The parameter <code>lambda</code> controls the number of cuts, with the process more likely to cut rectangles with large perimeters. The recursive process stops when <code>lambda_new < 0</code>, thus the budget is exhausted.
                </p>
                <p>Interestingly enough, setting <code>lambda_new = lambda - Expcost</code>, where <code>Expcost ~ Exp(x1 - x0 + y1 - y0)</code> did not yield expected
                   aesthetic results in our case because the inital budget was used up too slowly, which generated too many partitions. Trying out
@@ -92,6 +92,8 @@
                   <li>The result are two new Mondrian Processes <code>MP(lambda_new, x0, x1, y0, y_new)</code> and <code>MP(lambda_new, x0, x1, y_new, y1)</code>.</li>
                   <li>The algorithm then runs recursively for the two new Mondrian Processes with <code>horizontal=false</code>, meaning that the following
                      partition will be made vertically.
+                  </li>
+                  <li>For <code>lambda_new</code> the recursion stops and all previously made partitions (rectangles) are returned in a single data type. To prevent large data sets being passed around between recursions, the algorithm works with pointers, reading data directly from memory and altering it there.
                   </li>
                </ul>
                <h2 id="references">References</h2>
