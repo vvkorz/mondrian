@@ -10,11 +10,11 @@ import (
 var Colors = []color.Color{
 	color.White,
 	// red
-	color.RGBA{255, 0, 0, 255},
+	color.RGBA{221, 1, 0, 255},
 	// yellow
-	color.RGBA{255, 255, 0, 255},
+	color.RGBA{250, 201, 1, 255},
 	// blue
-	color.RGBA{0, 0, 255, 255},
+	color.RGBA{34, 80, 149, 255},
 }
 
 // ColorProbs define the probabilities for Colors with the same order of index:
