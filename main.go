@@ -34,9 +34,9 @@ func main() {
 	// Draws only rectangles with higher complexity and given colors and color distribution
 	var cols = []color.Color{
 		color.White,
-		color.RGBA{255, 0, 0, 255},
-		color.RGBA{255, 255, 0, 255},
-		color.RGBA{0, 0, 255, 255},
+		color.RGBA{221, 1, 0, 255},
+		color.RGBA{250, 201, 1, 255},
+		color.RGBA{34, 80, 149, 255},
 	}
 	var probs = []float64{
 		0.3,
