@@ -46,5 +46,5 @@ func main() {
 		0.13,
 		0.11,
 	}
-	mondrian.DrawR(x0, x1, y0, y1, 0.03, true, cols, probs, filepath.Join(*imgpath, "Rectangles.png"))
+	mondrian.DrawR(x0, x1, y0, y1, 0.03, true, cols, probs, filepath.Join(*imgpath, "Rectangles.png"), 2)
 }
