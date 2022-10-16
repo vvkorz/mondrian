@@ -20,7 +20,7 @@ var Colors = []color.Color{
 // ColorProbs define the probabilities for Colors with the same order of index:
 // white, red, yellow and blue.
 var ColorProbs = []float64{
-	0.6,
+	0.3,
 	0.4,
 	0.3,
 	0.3,
