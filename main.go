@@ -29,20 +29,22 @@ func main() {
 	fmt.Printf("Saving your Mondrian images to %s\n", *imgpath)
 
 	// Draws rectangles and lines
-	mondrian.Draw(x0, x1, y0, y1, cmplx, filepath.Join(*imgpath, "RectandLines.png"))
+	mondrian.Draw(x0, x1, y0, y1, cmplx, filepath.Join(*imgpath, "RectangLines.png"))
 
 	// Draws only rectangles with higher complexity and given colors and color distribution
 	var cols = []color.Color{
 		color.White,
-		color.RGBA{255, 0, 0, 255},
-		color.RGBA{255, 255, 0, 255},
-		color.RGBA{0, 0, 255, 255},
+		color.RGBA{221, 1, 0, 255},
+		color.RGBA{250, 201, 1, 255},
+		color.RGBA{34, 80, 149, 255},
+		color.RGBA{30, 38, 33, 255},
 	}
 	var probs = []float64{
-		0.3,
-		0.4,
-		0.3,
-		0.3,
+		0.5,
+		0.13,
+		0.13,
+		0.13,
+		0.11,
 	}
-	mondrian.DrawR(x0, x1, y0, y1, 0.03, true, cols, probs, filepath.Join(*imgpath, "Rectangles.png"))
+	mondrian.DrawR(x0, x1, y0, y1, 0.03, true, cols, probs, filepath.Join(*imgpath, "Rectangles.png"), 2)
 }

@@ -1,10 +1,11 @@
 package mondrian
 
 import (
-	"gonum.org/v1/gonum/stat/distuv"
 	"image"
 	"log"
 	"math/rand"
+
+	"gonum.org/v1/gonum/stat/distuv"
 )
 
 // MProcess defines the parameters of a Mondrian Process: the partitioning cost lambda,
