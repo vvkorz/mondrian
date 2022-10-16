@@ -15,15 +15,18 @@ var Colors = []color.Color{
 	color.RGBA{250, 201, 1, 255},
 	// blue
 	color.RGBA{34, 80, 149, 255},
+	// black
+	color.RGBA{30, 38, 33, 255},
 }
 
 // ColorProbs define the probabilities for Colors with the same order of index:
 // white, red, yellow and blue.
 var ColorProbs = []float64{
-	0.3,
-	0.4,
-	0.3,
-	0.3,
+	0.5,
+	0.13,
+	0.13,
+	0.13,
+	0.11,
 }
 
 // RndColor picks a randomly chosen color from the slice of colors c taking the first indices
@@ -32,25 +35,21 @@ func RndColor(
 	c []color.Color,
 	p []float64,
 ) color.Color {
-	if len(c) != 4 {
-		log.Fatalf("Length of c has to be 4, input has %d\n", len(c))
+	if len(c) != len(p) {
+		log.Fatalf("Length of c %d != %d\n", len(c), len(p))
 	}
-	if p[1]+p[2]+p[3] != 1 {
-		log.Fatalln("The sum of the last three probabilities has to be 1")
-	}
-	// Choosing if the color will be white or primary
-	if rand.Float64() > p[0] {
-		switch f := rand.Float64(); {
-		case f < p[1]:
-			// red
-			return c[1]
-		case f >= p[1] && f < (p[1]+p[2]):
-			// yellow
-			return c[2]
-		case f >= (p[1] + p[2]):
-			// blue
-			return c[3]
+	// calculate cumulative probabilities [0.4, 0.6] -> [0.4, 1]
+	total_probability := 0.0
+	random_float := rand.Float64() // choosing color
+	return_indx := 0               // by default return first color
+	for indx, probability := range p {
+		total_probability += probability
+		if random_float < total_probability {
+			return c[indx]
 		}
 	}
-	return c[0]
+	if total_probability != 1 {
+		log.Fatalf("The sum of probabilities has to be 1 not %f\n", total_probability)
+	}
+	return c[return_indx]
 }

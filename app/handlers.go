@@ -63,14 +63,14 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 				color.RGBA{34, 80, 149, 255}, // blue
 				color.RGBA{250, 201, 1, 255}, // yellow
 				color.RGBA{221, 1, 0, 255},   // red
-				//color.RGBA{30, 38, 33, 255},  // black
+				color.RGBA{30, 38, 33, 255},  // black
 			}
 			var probs = []float64{
-				0.3,
-				0.4,
-				0.3,
-				0.3,
-				//0.08,
+				0.5,
+				0.13,
+				0.13,
+				0.13,
+				0.11,
 			}
 			mondrian.DrawR(x0, x1, y0, y1, cmplx, true, cols, probs, image_location)
 			templatedata = PageData{
