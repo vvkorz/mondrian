@@ -10,6 +10,7 @@ import (
 
 type PageData struct {
 	Complexity float64
+	LineWidth  int
 	Lines      bool
 }
 
@@ -29,13 +30,13 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 	image_location := "img/mondrian_image.png"
 	templatedata := PageData{
 		Complexity: complexity,
+		LineWidth:  2,
 		Lines:      false,
 	}
 
 	if r.Method == "GET" {
 		// render a default image
 		mondrian.Draw(x0, x1, y0, y1, complexity, image_location)
-
 	} else {
 		err := r.ParseForm()
 		if err != nil {
@@ -45,6 +46,7 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		cmplx, _ := strconv.ParseFloat(r.FormValue("complexity"), 64)
+		lineWidth, _ := strconv.ParseInt(r.FormValue("lineWidth"), 10, 64)
 		complexity = cmplx // overwriting to pass later to the template
 		style := r.FormValue("style")
 		var cols = []color.Color{
@@ -63,16 +65,18 @@ func imageHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		if style == "on" {
 			// lines
-			mondrian.DrawR(x0, x1, y0, y1, cmplx, false, cols, probs, image_location, 2)
+			mondrian.DrawR(x0, x1, y0, y1, cmplx, false, cols, probs, image_location, int(lineWidth))
 			templatedata = PageData{
 				Complexity: complexity,
+				LineWidth:  int(lineWidth),
 				Lines:      true,
 			}
 		} else if style == "" {
 			// no lines
-			mondrian.DrawR(x0, x1, y0, y1, cmplx, true, cols, probs, image_location, 2)
+			mondrian.DrawR(x0, x1, y0, y1, cmplx, true, cols, probs, image_location, int(lineWidth))
 			templatedata = PageData{
 				Complexity: complexity,
+				LineWidth:  int(lineWidth),
 				Lines:      false,
 			}
 		} else {

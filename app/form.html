@@ -10,6 +10,7 @@
    </head>
    <body>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <a class="navbar-brand" href="/about">Mondrian Playground</a>
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
            <span class="navbar-toggler-icon"></span>
          </button>
@@ -31,27 +32,23 @@
          </div>
       </nav>
       
-      <div class="container-fluid">
-         <div class="row justify-content-md-center">
-            <div class="col col-md-4 text-center">
-               <h2>Mondrian Playground</h2>
-            </div>
-         </div> 
-      </div> 
       <form id="form" method="post" action="/">
          <div class="container-fluid">
             <div class="row justify-content-md-center">
-               <div class="col col-md-4 text-center">
+               <div class="col col-md-6 text-center">
                   <label for="complexityRange" class="form-label" data-toggle="tooltip" data-placement="top" title="The lower the complexity number, the less partitions are made.">Complexity:</label>
                   <input id="complexityRange" class="form-range" type="range" name="complexity" value="{{.Complexity}}" min="0.001" max="0.05" step="0.001" oninput="this.nextElementSibling.value = this.value">
                   <output>{{.Complexity}}</output>
                </div>
             </div>
             <div class="row justify-content-md-center">
-               <div class="col col-lg-4 text-center">
-                  <input name="style" id="style" type="checkbox" {{if .Lines}} checked {{end}} data-toggle="toggle" data-on="Line" data-off="No Lines" data-onstyle="secondary" data-offstyle="light">
+               <div class="col col-lg-6 text-center">
+                  <input name="style" id="style" type="checkbox" {{if .Lines}} checked {{end}} data-toggle="toggle" data-on="Line (Pixel)" data-off="No Lines" data-onstyle="secondary" data-offstyle="light">
+                  <input id="lineWidth" class="form-range" type="range" name="lineWidth" value="{{.LineWidth}}" min="1" max="6" step="1" oninput="this.nextElementSibling.value = this.value">
+                  <output>{{.LineWidth}}</output>
                </div>
             </div>
+            
             <div class="row justify-content-md-center">
                <div class="col col-md-4 text-center">
                   <!--    <input type="submit" value="Generate">-->
