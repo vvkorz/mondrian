@@ -22,7 +22,7 @@ func Draw(
 	cmplx float64,
 	path string,
 ) *image.RGBA {
-	return DrawR(x0, x1, y0, y1, cmplx, false, Colors, ColorProbs, path)
+	return DrawR(x0, x1, y0, y1, cmplx, false, Colors, ColorProbs, path, 1)
 }
 
 // DrawR takes a given canvas size and calls functions Rectangles and Lines to generate
@@ -39,6 +39,7 @@ func DrawR(
 	cols []color.Color,
 	probs []float64,
 	path string,
+	lineWidth int,
 ) *image.RGBA {
 	// Initialize global pseudo random generator
 	rand.Seed(time.Now().Unix())
@@ -81,7 +82,7 @@ func DrawR(
 	// Drawing lines
 	lineImage := image.NewRGBA(image.Rectangle{image.Point{x0, y0}, image.Point{x1, y1}})
 
-	Lines(pr, lineImage, color.Black)
+	Lines(pr, lineImage, color.RGBA{30, 38, 33, 255}, lineWidth)
 
 	// Overlaying the two images
 	draw.Draw(rectImage, r[0], lineImage, image.ZP, draw.Over)
